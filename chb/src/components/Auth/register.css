@@ -1,0 +1,4 @@
+#errorTab{
+    background-color: teal;
+    transition: opacity 1s linear;
+}
