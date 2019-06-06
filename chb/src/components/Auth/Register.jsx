@@ -31,7 +31,7 @@ class Register extends React.Component {
     }
 
     displayErrors = error => {
-        return error.message
+        return error
     }
 
     isFormValid = () => {
@@ -47,13 +47,15 @@ class Register extends React.Component {
         }
     }
 
-    isEmailerror = () => {
-        if(this.state.errors.message.includes('email')){
-            return true
-        }else{
-            return false
+    isEmailError = (errors, inputName) => {
+        try {
+
+            return errors.includes(inputName) ? 'error' : ''
+        } catch (error) {
+            return
         }
-    }
+     }
+    
 
     handleChange = (e) => {
         this.setState({ [e.target.name]: e.target.value })
@@ -92,22 +94,22 @@ class Register extends React.Component {
                         <Form size='large' onSubmit={this.handleSubmit}>
                             <Segment>
                                 <Form.Input fluid name='username' icon='user' iconPosition='left' placeholder="username" value={username}
-                                    onChange={this.handleChange} type='text' />
+                                    onChange={this.handleChange} type='text' className = {this.isEmailError(errors, 'username')}/>
 
                                 <Form.Input fluid name='email' icon='mail' iconPosition='left' placeholder="email" value={email}
-                                    onChange={this.handleChange} type='email' className = {this.isEmailError ? 'error' : ''}/>
+                                    onChange={this.handleChange} type='email' className = {this.isEmailError(errors, 'email')}/>
 
                                 <Form.Input fluid name='password' icon='lock' iconPosition='left' placeholder="password" value={password}
-                                    onChange={this.handleChange} type='password' />
+                                    onChange={this.handleChange} type='password' className = {this.isEmailError(errors, 'Password')}/>
                                 <Form.Input fluid name='passwordConfirmation' icon='lock' iconPosition='left' placeholder="confirm password"
                                     value={passwordConfirmation}
-                                    onChange={this.handleChange} type='password' />
+                                    onChange={this.handleChange} type='password' className = {this.isEmailError(errors, 'Password')}/>
                                 <Button disabled = {loading} className = {loading ? 'loading' :''} color='orange' fluid_size='large'> Submit </Button>
                                 <Message>Already a user?<Link to='login'> Login</Link>
                                 </Message>
                             </Segment>
                         </Form>
-                        {this.state.errors.message && (
+                        {this.state.errors && (
                             <Transition animation = {'fade right'} duration ={500}>
                                 <Message error >
                                     <h3>Error</h3>
