@@ -2,6 +2,7 @@ import React from 'react'
 import { Grid, Form, Segment, Button, Header, Message, Icon, Transition } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import firebase from '../../firebase'
+import { isError } from 'util';
 require('./register.css')
 
 class Register extends React.Component {
@@ -11,7 +12,8 @@ class Register extends React.Component {
         password: '',
         passwordConfirmation: '',
         errors: [],
-        loading: false
+        loading: false,
+        isEmailError: null
     }
 
     isFormEmpty = ({ username, email, password, passwordConfirmation }) => {
@@ -45,6 +47,13 @@ class Register extends React.Component {
         }
     }
 
+    isEmailerror = () => {
+        if(this.state.errors.message.includes('email')){
+            return true
+        }else{
+            return false
+        }
+    }
 
     handleChange = (e) => {
         this.setState({ [e.target.name]: e.target.value })
@@ -63,7 +72,7 @@ class Register extends React.Component {
                 })
                 .catch(e => {
                     console.error(e)
-                    this.setState({ errors: 'unable to connect', loading: false })
+                    this.setState({ errors: e.message, loading: false })
                 })
         } else {
             console.log('error')
@@ -86,14 +95,14 @@ class Register extends React.Component {
                                     onChange={this.handleChange} type='text' />
 
                                 <Form.Input fluid name='email' icon='mail' iconPosition='left' placeholder="email" value={email}
-                                    onChange={this.handleChange} type='email' />
+                                    onChange={this.handleChange} type='email' className = {this.isEmailError ? 'error' : ''}/>
 
                                 <Form.Input fluid name='password' icon='lock' iconPosition='left' placeholder="password" value={password}
                                     onChange={this.handleChange} type='password' />
                                 <Form.Input fluid name='passwordConfirmation' icon='lock' iconPosition='left' placeholder="confirm password"
                                     value={passwordConfirmation}
                                     onChange={this.handleChange} type='password' />
-                                <Button color='orange' fluid_size='large'> Submit </Button>
+                                <Button disabled = {loading} className = {loading ? 'loading' :''} color='orange' fluid_size='large'> Submit </Button>
                                 <Message>Already a user?<Link to='login'> Login</Link>
                                 </Message>
                             </Segment>
