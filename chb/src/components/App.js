@@ -8,27 +8,20 @@ import MetaPanel from './MetaPanel/MetaPanel'
 import { connect } from 'react-redux'
 
 const App = ({ currentUser }) => (
-  <Grid columns style={{ backgroundColor: 'eee' }} >
-      <Grid.Column >
-        <ColorPanel />
-      </Grid.Column>
-
-      <Grid.Column>
-        <SidePanel currentUser={currentUser} />
-      </Grid.Column>
-
-      <Grid.Column>
-        <Messages />
-      </Grid.Column>
-
-      <Grid.Column>
-        <MetaPanel />
-      </Grid.Column>
+  <Grid style={{ backgroundColor: 'eee' }} >
+      <ColorPanel />
+      <SidePanel currentUser={currentUser} />
+    <Grid.Column>
+      <Messages />
+    </Grid.Column>
+    <Grid.Column width={4}>
+      <MetaPanel />
+    </Grid.Column>
   </Grid>
-    )
-    
+)
+
 const mapStateToProps = state => ({
-      currentUser: state.user.currentUser
-  })
-  
-  export default connect(mapStateToProps)(App);
+  currentUser: state.user.currentUser
+})
+
+export default connect(mapStateToProps)(App);
