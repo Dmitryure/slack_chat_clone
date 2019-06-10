@@ -25,8 +25,8 @@ class Login extends React.Component {
         } catch (error) {
             return
         }
-     }
-    
+    }
+
 
     handleChange = (e) => {
         this.setState({ [e.target.name]: e.target.value })
@@ -37,18 +37,19 @@ class Login extends React.Component {
         if (this.isFormValid(this.state)) {
             this.setState({ errors: [], loading: true })
             firebase.auth()
-            .signInWithEmailAndPassword(this.state.email, this.state.password)
-            .then(signedInUser => {
-                console.log(signedInUser)
-            })
-            .catch(e => {
-                console.error(e)
-                this.setState({errors: e.message, loading:false})
-            })
+                .signInWithEmailAndPassword(this.state.email, this.state.password)
+                .then(signedInUser => {
+                    console.log(signedInUser)
+                })
+                .catch(e => {
+                    console.error(e)
+                    this.setState({ errors: e.message, loading: false })
+                })
+        }
     }
-}
 
-    isFormValid = ({email, password}) => {
+
+    isFormValid = ({ email, password }) => {
         return email && password
     }
 
@@ -65,17 +66,17 @@ class Login extends React.Component {
                         <Form size='large' onSubmit={this.handleSubmit}>
                             <Segment>
                                 <Form.Input fluid name='email' icon='mail' iconPosition='left' placeholder="email" value={email}
-                                    onChange={this.handleChange} type='email' className = {this.isEmailError(errors, 'email')}/>
+                                    onChange={this.handleChange} type='email' className={this.isEmailError(errors, 'email')} />
 
                                 <Form.Input fluid name='password' icon='lock' iconPosition='left' placeholder="password" value={password}
-                                    onChange={this.handleChange} type='password' className = {this.isEmailError(errors, 'Password')}/>
-                                <Button disabled = {loading} className = {loading ? 'loading' :''} color='violet' fluid_size='large'> Submit </Button>
-                                <Message>Don't have an account?<Link to='/register'> Login</Link>
+                                    onChange={this.handleChange} type='password' className={this.isEmailError(errors, 'Password')} />
+                                <Button disabled={loading} className={loading ? 'loading' : ''} color='violet' fluid_size='large'> Submit </Button>
+                                <Message>Don't have an account?<Link to='/register'> Register</Link>
                                 </Message>
                             </Segment>
                         </Form>
                         {this.state.errors && (
-                            <Transition animation = {'fade right'} duration ={500}>
+                            <Transition animation={'fade right'} duration={500}>
                                 <Message error >
                                     <h3>Error</h3>
                                     <h5>{this.displayErrors(this.state.errors)}</h5>
