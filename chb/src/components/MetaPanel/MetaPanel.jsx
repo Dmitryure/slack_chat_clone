@@ -1,4 +1,5 @@
 import React from 'react'
+import {Segment, Accordion, Header, Icon} from 'semantic-ui-react'
 
 
 class MetaPanel extends React.Component {
@@ -6,10 +7,13 @@ class MetaPanel extends React.Component {
         
     }
     render(){
+        
         return(
-        <div>
-        MetaPanel
-        </div>
+            <Segment>
+                <Header as ='h3'>
+
+                </Header>
+            </Segment>
         )
     }
 }
