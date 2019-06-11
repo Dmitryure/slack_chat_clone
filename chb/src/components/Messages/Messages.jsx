@@ -9,7 +9,7 @@ import MessageForm from './MessageForm'
 class Messages extends React.Component {
     state = {
         messagesRef: firebase.database().ref('messages'),
-        messagesLoading:false, 
+        messagesLoading:true, 
         messages: [],
         channel: this.props.currentChannel,
         user: this.props.currentUser
@@ -28,13 +28,13 @@ class Messages extends React.Component {
     }
 
     displayMessages = messages => (
-        messages.length > 0 && messages.map(message=> {
+        messages.length > 0 && messages.map(message=> (
             <Message 
             key = {message.timestamp}
             message = {message}
             user = {this.state.user}
             />
-        })
+        ))
     )
 
     addMessageListener = channelId => {
