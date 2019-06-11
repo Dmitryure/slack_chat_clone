@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, Header, Icon, Dropdown, Image } from 'semantic-ui-react'
+import { Grid, Header, Icon, Dropdown, Image, Button } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import firebase from 'firebase'
 
@@ -21,7 +21,7 @@ class UserPanel extends React.Component {
         },
         {
             key: 'singout',
-            text: <span onClick={this.handleSignout}>Sign out</span>
+            text: <Button style = {{width:'100%'}} onClick={this.handleSignout}><span>Sign out</span></Button>
         }
     ]
 

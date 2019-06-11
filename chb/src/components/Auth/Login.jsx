@@ -75,7 +75,7 @@ class Login extends React.Component {
                                 </Message>
                             </Segment>
                         </Form>
-                        {this.state.errors && (
+                        {this.state.errors.length > 1 && (
                             <Transition animation={'fade right'} duration={500}>
                                 <Message error >
                                     <h3>Error</h3>

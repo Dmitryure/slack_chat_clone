@@ -129,13 +129,11 @@ class Register extends React.Component {
                                 </Message>
                             </Segment>
                         </Form>
-                        {this.state.errors && (
-                            <Transition animation = {'fade right'} duration ={500}>
+                        {this.state.errors.length > 0 && (
                                 <Message error >
                                     <h3>Error</h3>
                                     <h5>{this.displayErrors(this.state.errors)}</h5>
                                 </Message>
-                            </Transition>
                         )}
                     </Grid.Column>
                 </Grid>
