@@ -118,7 +118,7 @@ class Channels extends React.Component {
     getNotificationCount = channel => {
         let count = 0
 
-        this.state.notification.forEach(notification => {
+        this.state.notifications.forEach(notification => {
             if(notification.id === channel.id){
                 count = notification.count
             }
@@ -174,7 +174,7 @@ class Channels extends React.Component {
 
             if (index!==-1){
                 let updatedNotifications = [...this.state.notifications]
-                updatedNotifications[index].total = this.state.notification[index].lastKnownTotal
+                updatedNotifications[index].total = this.state.notifications[index].lastKnownTotal
                 updatedNotifications[index].count = 0
                 this.setState({notifications:updatedNotifications})
             }
