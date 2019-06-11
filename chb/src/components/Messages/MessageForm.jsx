@@ -32,10 +32,18 @@ class MessageForm extends React.Component {
         this.setState({ [event.target.name]: event.target.value })
     }
 
+    getPath = () => {
+        if(this.props.isPrivateChannel) {
+            return `chat/private-${this.state.channel.id}`
+        }else{
+            return 'chat/public'
+        }
+    }
+
     uploadFile = (file, metadata) => {
         const pathToUpload = this.state.channel.id
-        const ref = this.props.messagesRef
-        const filePath = `chat/public/${uuidv4()}.jpg`
+        const ref = this.props.getMessagesRef()
+        const filePath = `${this.getPath()}/${uuidv4()}.jpg`
 
         this.setState({
             uploadState: 'uploading',
@@ -103,12 +111,12 @@ class MessageForm extends React.Component {
     }
 
     sendMessage = () => {
-        const { messagesRef } = this.props
+        const { getMessagesRef } = this.props
         const { message, channel } = this.state
 
         if (message) {
             this.setState({ loading: true })
-            messagesRef
+            getMessagesRef()
                 .child(channel.id)
                 .push()
                 .set(this.createMessage())

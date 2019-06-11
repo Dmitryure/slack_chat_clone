@@ -2,7 +2,7 @@ import React from 'react'
 import { Menu, Icon, Modal, Form, Input, Button } from 'semantic-ui-react'
 import firebase from 'firebase'
 import { connect } from "react-redux";
-import { setCurrentChannel } from '../../actions/index'
+import { setCurrentChannel, setPrivateChannel } from '../../actions/index'
 
 class Channels extends React.Component {
     state = {
@@ -10,6 +10,9 @@ class Channels extends React.Component {
         channels: [],
         user: this.props.currentUser,
         channelName: '',
+        channel: null,
+        messagesRef: firebase.database().ref('messages'),
+        notification: [],
         channelDetails: '',
         modal: false,
         channelsRef: firebase.database().ref('channels'),
@@ -29,7 +32,40 @@ class Channels extends React.Component {
         this.state.channelsRef.on('child_added', snap => {
             loadedChannels.push(snap.val())
             this.setState({ channels: loadedChannels }, () => this.setFirstChannel())
+            this.addNotificationListener(snap.key)
         })
+    }
+
+    addNotificationListener = channelId => {
+        this.state.messagesRef.child(channelId).on('value', snap => {
+            if (this.state.channel) {
+                this.handleNotifications(channelId, this.state.channel.id, this.state.notification, snap)
+            }
+        })
+    }
+
+    handleNotifications = (channelId, currentChannelId, notifications, snap) => {
+        let lastTotal = 0
+        let index = notifications.findIndex(notification => notification.id === channelId)
+
+        if (index !== -1) {
+            if(channelId !== currentChannelId){
+                lastTotal = notifications[index].total
+
+                if(snap.numChildren()-lastTotal>0){
+                    notifications[index].count = snap.numChildren()-lastTotal
+                }
+            }
+            notifications[index].lastKnownTotal = snap.numChildren()
+        } else {
+            notifications.push({
+                id: channelId,
+                total: snap.numChildren(),
+                lastKnownTotal: snap.numChildren(),
+                count: 0
+            })
+        }
+        this.setState({notifications})
     }
 
     closeModal = () => {
@@ -42,7 +78,7 @@ class Channels extends React.Component {
 
     removeListeners = () => {
         this.state.channelsRef.off()
-    } 
+    }
 
     handleChange = event => {
         this.setState({ [event.target.name]: event.target.value })
@@ -86,8 +122,8 @@ class Channels extends React.Component {
                 onClick={() => this.changeChannel(channel)}
                 name={channel.name}
                 style={{ opacity: 0.7 }}
-                active={channel.id===this.state.activeChannel}
-                >
+                active={channel.id === this.state.activeChannel}
+            >
                 # {channel.name}
             </Menu.Item>
         ))
@@ -104,12 +140,14 @@ class Channels extends React.Component {
     }
 
     setActiveChannel = (channel) => {
-        this.setState({activeChannel:channel.id})
+        this.setState({ activeChannel: channel.id })
     }
 
     changeChannel = channel => {
         this.setActiveChannel(channel)
         this.props.setCurrentChannel(channel)
+        this.props.setPrivateChannel(false)
+        this.setState({ channel })
     }
 
     isFormValid = ({ channelName, channelDetails }) => channelName && channelDetails
@@ -118,7 +156,7 @@ class Channels extends React.Component {
         const { channels, modal } = this.state
         return (
             <React.Fragment>
-                <Menu.Menu className= 'menu'>
+                <Menu.Menu className='menu'>
                     <Menu.Item>
                         <span>
                             <Icon name='exchange' /> CHANNELS
@@ -164,4 +202,4 @@ class Channels extends React.Component {
 
 
 
-export default connect(null, { setCurrentChannel })(Channels)
+export default connect(null, { setCurrentChannel, setPrivateChannel })(Channels)
