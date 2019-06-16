@@ -3,7 +3,8 @@ import { combineReducers } from 'redux'
 
 const initialUserState = {
     currentUser: null,
-    isLoading: true
+    isLoading: true,
+    userPosts: null,
 }
 
 const user_reducer = (state = initialUserState, action) => {
@@ -54,10 +55,28 @@ const channel_reducer = (state = initialChannelState, action) => {
     }
 }
 
+const initialColorsState = {
+    primaryColor: '#4c3c4c',
+    secondaryColor: '#eee'
+}
+
+const colors_reducer = (state = initialColorsState, action) => {
+    switch (action.type) {
+        case actionTypes.SET_COLORS:
+            return {
+                primaryColor: action.payload.primary,
+                secondaryColor: action.payload.secondary
+            }
+        default:
+            return state
+
+    }
+}
 
 const rootReducer = combineReducers({
     user: user_reducer,
-    channel: channel_reducer
+    channel: channel_reducer,
+    colors: colors_reducer
 })
 
 export default rootReducer

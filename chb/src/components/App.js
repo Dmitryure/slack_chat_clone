@@ -7,9 +7,12 @@ import SidePanel from './SidePanel/SidePanel'
 import MetaPanel from './MetaPanel/MetaPanel'
 import { connect } from 'react-redux'
 
-const App = ({ currentUser, currentChannel, isPrivateChannel }) => (
-  <Grid columns = 'four' divided style={{ backgroundColor: 'eee' }} >
-      <ColorPanel />
+const App = ({ currentUser, currentChannel, isPrivateChannel, userPosts, primaryColor, secondaryColor }) => (
+  <Grid columns = 'four' divided style={{ background: secondaryColor }} >
+      <ColorPanel 
+      key = {currentUser && currentUser.name}
+      currentUser = {currentUser}
+      />
       <SidePanel 
       key = {currentUser && currentUser.uid}
       currentUser={currentUser} />
@@ -22,7 +25,8 @@ const App = ({ currentUser, currentChannel, isPrivateChannel }) => (
     </Grid.Column>
     <Grid.Column width={4}>
       <MetaPanel 
-      key = {currentChannel && currentChannel.id} 
+      key = {currentChannel && currentChannel.name}
+      userPosts = {userPosts} 
       isPrivateChannel={isPrivateChannel} 
       currentChannel = {currentChannel}/>
     </Grid.Column>
@@ -32,7 +36,10 @@ const App = ({ currentUser, currentChannel, isPrivateChannel }) => (
 const mapStateToProps = state => ({
   currentUser: state.user.currentUser,
   currentChannel: state.channel.currentChannel,
-  isPrivateChannel: state.channel.isPrivateChannel
+  isPrivateChannel: state.channel.isPrivateChannel,
+  userPosts: state.channel.userPosts,
+  primaryColor: state.colors.primaryColor,
+  secondaryColor: state.colors.secondaryColor
 })
 
 export default connect(mapStateToProps)(App);
