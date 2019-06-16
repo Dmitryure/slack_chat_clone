@@ -24,6 +24,7 @@ class ColorPanel extends React.Component {
         console.log('component did mount')
     }
 
+
     addListener = (userId) => {
         let userColors = []
         this.state.usersRef.child(`${userId}/colors`)
@@ -56,8 +57,8 @@ class ColorPanel extends React.Component {
     
     displayUserColors = (colors) => (
         
-        colors.length > 0 && colors.map((color, i) => (
-            <React.Fragment key = {i}>
+        colors.length > 0 && colors.map((color, i) => {
+           return <React.Fragment key = {i}>
                 <Divider/>
                 <div className = 'color__container' onClick = {() => this.props.setColors(color.primary, color.secondary)}>
                     <div className = 'color__square' style= {{background:color.primary}}>
@@ -67,7 +68,7 @@ class ColorPanel extends React.Component {
                 </div>
 
             </React.Fragment>
-        ))
+        })
     )
 
     saveColors = (primary, secondary) => {
