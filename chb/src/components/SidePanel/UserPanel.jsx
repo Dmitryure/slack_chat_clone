@@ -32,9 +32,10 @@ class UserPanel extends React.Component {
 
     render() {
         console.log(this.props)
+        const { primaryColor } = this.props
         const { user } = this.state
         return (
-            <Grid style={{ background: '#4c3c4c' }}>
+            <Grid style={{ background: primaryColor }}>
                 <Grid.Column>
                     <Grid.Row style={{ padding: '1em', margin: 0 }}>
                         <Header inverted floated='left' as='h2'>
