@@ -2,7 +2,6 @@ import React from 'react'
 import { Grid, Form, Segment, Button, Header, Message, Icon, Transition } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import firebase from '../../firebase'
-import { isError } from 'util';
 import md5 from 'md5'
 require('./register.css')
 
@@ -33,6 +32,7 @@ class Register extends React.Component {
     }
 
     displayErrors = error => {
+        console.log(error)
         return error
     }
 
@@ -51,7 +51,6 @@ class Register extends React.Component {
 
     isEmailError = (errors, inputName) => {
         try {
-
             return errors.includes(inputName) ? 'error' : ''
         } catch (error) {
             return
@@ -129,10 +128,10 @@ class Register extends React.Component {
                                 </Message>
                             </Segment>
                         </Form>
-                        {this.state.errors.length > 0 && (
+                        {this.state.errors.length !== 0  && (
                                 <Message error >
                                     <h3>Error</h3>
-                                    <h5>{this.displayErrors(this.state.errors)}</h5>
+                                    <h5>{this.displayErrors(this.state.errors.message)}</h5>
                                 </Message>
                         )}
                     </Grid.Column>
