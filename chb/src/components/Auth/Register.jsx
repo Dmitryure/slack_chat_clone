@@ -32,7 +32,6 @@ class Register extends React.Component {
     }
 
     displayErrors = error => {
-        console.log(error)
         return error
     }
 
